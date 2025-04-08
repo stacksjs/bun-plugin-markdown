@@ -1,17 +1,17 @@
 {
-  "name": "bun-frontmatter-markdown-loader",
+  "name": "bun-plugin-markdown",
   "type": "module",
   "version": "0.0.0",
   "description": "A Bun loader for Frontmatter Markdown files.",
   "author": "Chris Breuer <chris@stacksjs.org>",
   "license": "MIT",
-  "homepage": "https://github.com/stacksjs/bun-frontmatter-markdown-loader#readme",
+  "homepage": "https://github.com/stacksjs/bun-plugin-markdown#readme",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/stacksjs/bun-frontmatter-markdown-loader.git"
+    "url": "git+https://github.com/stacksjs/bun-plugin-markdown.git"
   },
   "bugs": {
-    "url": "https://github.com/stacksjs/bun-frontmatter-markdown-loader/issues"
+    "url": "https://github.com/stacksjs/bun-plugin-markdown/issues"
   },
   "keywords": ["typescript", "bun", "loader", "markdown", "frontmatter"],
   "exports": {

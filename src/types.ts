@@ -1,5 +1,4 @@
-export interface BinaryConfig {
-  from: string
+export interface MarkdownConfig {
   verbose: boolean
 }
 

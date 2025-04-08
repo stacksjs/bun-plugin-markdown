@@ -6,7 +6,7 @@
 <!-- [![npm downloads][npm-downloads-src]][npm-downloads-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
-# bun-frontmatter-markdown-loader
+# bun-plugin-markdown
 
 A Bun loader for markdown files with YAML frontmatter.
 
@@ -24,14 +24,14 @@ This loader is designed to work with Bun's build system, making it easy to impor
 ## Installation
 
 ```bash
-bun add bun-frontmatter-markdown-loader
+bun add bun-plugin-markdown
 ```
 
 ## Usage
 
 ```ts
 // In your bun configuration
-import { bunFrontmatterMarkdownLoader } from 'bun-frontmatter-markdown-loader'
+import { bunFrontmatterMarkdownLoader } from 'bun-plugin-markdown'
 
 const build = {
   // ...
