@@ -6,6 +6,7 @@ import { getNormalizedMarkdownCompiler, stringify } from './utils'
 export * from './config'
 export { bunFrontmatterMarkdownLoader } from './loader'
 export { Mode } from './mode'
+export * from './plugin'
 export * from './types'
 
 // Export the loader function for Bun

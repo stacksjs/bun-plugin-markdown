@@ -6,20 +6,20 @@
 <!-- [![npm downloads][npm-downloads-src]][npm-downloads-href] -->
 <!-- [![Codecov][codecov-src]][codecov-href] -->
 
-# bun-plugin-markdown
+# Bun Frontmatter Markdown Loader
 
-A Bun loader for markdown files with YAML frontmatter.
-
-This loader is designed to work with Bun's build system, making it easy to import markdown files with frontmatter in your projects.
+A Bun loader and plugin for handling Markdown files with frontmatter.
 
 ## Features
 
-- Parse markdown files with YAML frontmatter
-- Output HTML, frontmatter attributes, and body content
-- Support for Vue components/render functions
-- Support for React components
-- Configurable markdown compilation options
-- TypeScript support
+- Parse frontmatter from markdown files
+- Convert markdown to HTML
+- Support for various output modes, including:
+  - HTML rendering
+  - Raw markdown body
+  - Metadata
+  - React component generation
+  - Vue component and render functions
 
 ## Installation
 
@@ -29,117 +29,202 @@ bun add bun-plugin-markdown
 
 ## Usage
 
-```ts
-// In your bun configuration
-import { bunFrontmatterMarkdownLoader } from 'bun-plugin-markdown'
+### As a Bun Plugin
 
-const build = {
-  // ...
-  loaders: {
-    '.md': bunFrontmatterMarkdownLoader({
-      mode: ['html', 'body', 'meta'],
-    }),
-  },
+The simplest way to use this package is as a Bun plugin:
+
+```typescript
+import { markdownPlugin } from 'bun-plugin-markdown'
+
+// Now you can import markdown files directly
+import myContent from './content/page.md'
+
+// Register the plugin globally
+Bun.plugin(markdownPlugin)
+
+console.log(myContent.html) // Rendered HTML
+console.log(myContent.attributes) // Frontmatter attributes
+```
+
+### Custom Plugin Configuration
+
+You can customize the behavior of the plugin:
+
+```typescript
+import { frontmatterMarkdownPlugin, Mode } from 'bun-plugin-markdown'
+
+// Register the plugin with custom options
+Bun.plugin(frontmatterMarkdownPlugin({
+  mode: [Mode.HTML, Mode.BODY, Mode.META],
+  // Add other options as needed
+}))
+```
+
+### With Bun.build
+
+```typescript
+import { frontmatterMarkdownPlugin, Mode } from 'bun-plugin-markdown'
+
+await Bun.build({
+  entrypoints: ['./src/index.ts'],
+  outdir: './dist',
+  plugins: [
+    frontmatterMarkdownPlugin({
+      mode: [Mode.HTML, Mode.BODY]
+    })
+  ]
+})
+```
+
+### With React Support
+
+For React support, install the required peer dependencies:
+
+```bash
+bun add @babel/core @babel/preset-react -D
+```
+
+Then use the plugin with React mode:
+
+```typescript
+import { frontmatterMarkdownPlugin, Mode } from 'bun-plugin-markdown'
+
+Bun.plugin(frontmatterMarkdownPlugin({
+  mode: [Mode.HTML, Mode.REACT],
+  react: {
+    root: 'markdown-content'  // Optional custom root class
+  }
+}))
+
+// In your component
+import myContent from './content/page.md'
+
+function MyComponent() {
+  return (
+    <div>
+      <h1>{myContent.attributes.title}</h1>
+      {/* Render the React component */}
+      {myContent.react()}
+    </div>
+  )
 }
 ```
 
-Then in your code:
+### With Vue Support
 
-```ts
-import article from './article.md'
-
-console.log(article.attributes) // Frontmatter data
-console.log(article.html) // Rendered HTML
-console.log(article.body) // Raw markdown content
-```
-
-## Options
-
-### `mode`
-
-Type: `string[]` or `string`
-Default: `['html']`
-
-Specifies what to extract from the markdown file.
-
-- `html`: Renders markdown to HTML
-- `body`: Returns the raw markdown body
-- `meta`: Include metadata about the resource
-- `vue-component`: Generate a Vue component
-- `vue-render-functions`: Include render functions for Vue
-- `react-component`: Generate a React component
-
-### `markdown`
-
-Type: `Function`
-Default: `undefined`
-
-Custom function to compile the markdown into HTML.
-
-### `markdownIt`
-
-Type: `Object` or `MarkdownIt instance`
-Default: `{ html: true }`
-
-Configuration options for the MarkdownIt instance, or a custom MarkdownIt instance.
-
-### `vue`
-
-Type: `Object`
-Default: `undefined`
-
-Vue-specific options.
-
-- `root`: Class name to add to the root element (default: `frontmatter-markdown`)
-- `transformAssetUrls`: Transform URLs in the template (default: `true`)
-
-### `react`
-
-Type: `Object`
-Default: `undefined`
-
-React-specific options.
-
-- `root`: Class name to add to the root element (default: `frontmatter-markdown`)
-
-## Optional Dependencies
-
-For Vue support, you'll need:
+For Vue support, install the required peer dependencies:
 
 ```bash
-bun add vue-template-compiler @vue/component-compiler-utils
+bun add vue-template-compiler @vue/component-compiler-utils -D
 ```
 
-For React support, you'll need:
+Then use the plugin with Vue mode:
+
+```typescript
+import { frontmatterMarkdownPlugin, Mode } from 'bun-plugin-markdown'
+
+// In your component
+import myContent from './content/page.md'
+
+Bun.plugin(frontmatterMarkdownPlugin({
+  mode: [Mode.HTML, Mode.VUE_COMPONENT],
+  vue: {
+    root: 'markdown-content' // Optional custom root class
+  }
+}))
+
+export default {
+  components: {
+    MarkdownContent: myContent.vue.component
+  },
+  template: `
+    <div>
+      <h1>{{ title }}</h1>
+      <markdown-content />
+    </div>
+  `,
+  data() {
+    return {
+      title: myContent.attributes.title
+    }
+  }
+}
+```
+
+### With Bun Fullstack Server
+
+Bun's fullstack dev server can use the markdown plugin when configured in your `bunfig.toml`:
+
+```toml
+[serve.static]
+plugins = [ "bun-plugin-markdown/plugin" ]
+```
+
+Then you can import markdown files directly in your HTML:
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Markdown Viewer</title>
+  <style>
+    /* Your styles here */
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script type="module">
+    // Import markdown file directly
+    import content from './content.md';
+
+    // Use the processed content
+    document.getElementById('app').innerHTML = content.html;
+    console.log(content.attributes); // Access frontmatter
+  </script>
+</body>
+</html>
+```
+
+And use it in your server:
+
+```typescript
+import { serve } from 'bun'
+
+// Create your HTML template
+const template = `/* HTML with markdown import */`
+
+serve({
+  port: 3000,
+  development: true,
+
+  routes: {
+    '/': new Response(template, {
+      headers: { 'Content-Type': 'text/html' }
+    })
+  }
+})
+```
+
+To see a complete example, run:
 
 ```bash
-bun add @babel/core @babel/preset-react react
+bun run fullstack
 ```
 
-## Example
+## Available Modes
 
-`article.md`:
+The loader supports different output modes:
 
-```md
----
-title: Hello World
-date: 2023-01-01
----
+- `Mode.HTML`: Generates HTML from the markdown
+- `Mode.BODY`: Includes the raw markdown body
+- `Mode.META`: Includes metadata about the source file
+- `Mode.REACT`: Generates a React component
+- `Mode.VUE_COMPONENT`: Generates a Vue component
+- `Mode.VUE_RENDER_FUNCTIONS`: Generates Vue render functions
 
-# Hello World
+## License
 
-This is a sample markdown file with frontmatter.
-```
-
-`app.ts`:
-
-```ts
-import article from './article.md'
-
-console.log(article.attributes.title) // "Hello World"
-console.log(article.attributes.date) // "2023-01-01"
-console.log(article.html) // "<h1>Hello World</h1><p>This is a sample markdown file with frontmatter.</p>"
-```
+MIT
 
 ## Testing
 
@@ -167,7 +252,7 @@ For casual chit-chat with others using this package:
 
 ## Postcardware
 
-“Software that is free, but hopes for a postcard.” We love receiving postcards from around the world showing where Stacks is being used! We showcase them on our website too.
+"Software that is free, but hopes for a postcard." We love receiving postcards from around the world showing where Stacks is being used! We showcase them on our website too.
 
 Our address: Stacks.js, 12665 Village Ln #2306, Playa Vista, CA 90094, United States 🌎
 
@@ -177,12 +262,6 @@ We would like to extend our thanks to the following sponsors for funding Stacks 
 
 - [JetBrains](https://www.jetbrains.com/)
 - [The Solana Foundation](https://solana.com/)
-
-## License
-
-The MIT License (MIT). Please see [LICENSE](LICENSE.md) for more information.
-
-Made with 💙
 
 <!-- Badges -->
 [npm-version-src]: https://img.shields.io/npm/v/bun-ts-starter?style=flat-square
