@@ -52,7 +52,7 @@
     "@babel/core": "^7.24.0",
     "@babel/preset-react": "^7.23.3",
     "@vue/component-compiler-utils": "^3.3.0",
-    "react": "^18.2.0",
+    "react": "^19.1.0",
     "vue-template-compiler": "^2.7.16"
   },
   "peerDependenciesMeta": {
@@ -80,7 +80,7 @@
     "@stacksjs/eslint-config": "^4.10.2-beta.3",
     "@types/bun": "^1.2.8",
     "@types/markdown-it": "^14.1.2",
-    "@types/react": "^18.2.65",
+    "@types/react": "^19.1.0",
     "bumpp": "^10.1.0",
     "bun-plugin-dtsx": "^0.21.9",
     "bunfig": "^0.8.2",
