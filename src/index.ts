@@ -49,10 +49,9 @@ export default async function (this: any, source: string): Promise<string> {
   if ((enabled(Mode.VUE_COMPONENT) || enabled(Mode.VUE_RENDER_FUNCTIONS))) {
     let vueCompiler: any, compileVueTemplate: any
     try {
-      // Using require instead of import for compatibility
-      // @ts-expect-error No types available
+      // eslint-disable-next-line ts/no-require-imports
       vueCompiler = require('vue-template-compiler')
-      // @ts-expect-error No types available
+      // eslint-disable-next-line ts/no-require-imports
       compileVueTemplate = require('@vue/component-compiler-utils').compileTemplate
     }
     catch (err: any) {
@@ -128,10 +127,9 @@ export default async function (this: any, source: string): Promise<string> {
     const reactRootClass = options.react && options.react.root ? options.react.root : 'frontmatter-markdown'
 
     try {
-      // Using require instead of import for compatibility
-      // @ts-expect-error No types available
+      // eslint-disable-next-line ts/no-require-imports
       babelCore = require('@babel/core')
-      // @ts-expect-error No types available
+      // eslint-disable-next-line ts/no-require-imports
       require('@babel/preset-react')
     }
     catch {
