@@ -49,8 +49,8 @@
     "fullstack": "bun run examples/fullstack-server.ts"
   },
   "peerDependencies": {
-    "@babel/core": "^7.24.0",
-    "@babel/preset-react": "^7.23.3",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-react": "^7.27.1",
     "@vue/component-compiler-utils": "^3.3.0",
     "react": "^19.1.0",
     "vue-template-compiler": "^2.7.16"
@@ -78,15 +78,15 @@
   },
   "devDependencies": {
     "@stacksjs/eslint-config": "^4.10.2-beta.3",
-    "@types/bun": "^1.2.8",
+    "@types/bun": "^1.2.13",
     "@types/markdown-it": "^14.1.2",
-    "@types/react": "^19.1.0",
-    "bumpp": "^10.1.0",
-    "bun-plugin-dtsx": "^0.21.9",
-    "bunfig": "^0.8.2",
+    "@types/react": "^19.1.4",
+    "bumpp": "^10.1.1",
+    "bun-plugin-dtsx": "^0.21.12",
+    "bunfig": "^0.10.0",
     "changelogen": "^0.6.1",
-    "lint-staged": "^15.5.0",
-    "simple-git-hooks": "^2.12.1",
+    "lint-staged": "^15.5.2",
+    "simple-git-hooks": "^2.13.0",
     "typescript": "^5.8.3"
   },
   "overrides": {
