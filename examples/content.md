@@ -22,19 +22,19 @@ This is a demonstration of using the **bun-plugin-markdown** with Bun's fullstac
 ### Code Example
 
 ```typescript
-import { frontmatterMarkdownPlugin, Mode } from 'bun-plugin-markdown'
 import { serve } from 'bun'
-
-// Register the plugin
-Bun.plugin(frontmatterMarkdownPlugin())
+import { frontmatterMarkdownPlugin, Mode } from 'bun-plugin-markdown'
 
 // Import markdown content
 import content from './content.md'
 
+// Register the plugin
+Bun.plugin(frontmatterMarkdownPlugin())
+
 // Use in your server
 serve({
   routes: {
-    "/": createHtmlTemplate('./content.md')
+    '/': createHtmlTemplate('./content.md')
   },
   development: true
 })
