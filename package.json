@@ -83,7 +83,7 @@
     "@stacksjs/eslint-config": "^4.10.2-beta.3",
     "@stacksjs/gitlint": "^0.1.5",
     "@stacksjs/logsmith": "^0.1.8",
-    "@types/bun": "^1.2.20",
+    "@types/bun": "^1.2.21",
     "@types/markdown-it": "^14.1.2",
     "@types/react": "^19.1.11",
     "buddy-bot": "^0.8.9",
