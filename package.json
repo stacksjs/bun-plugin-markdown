@@ -51,7 +51,7 @@
     "fullstack": "bun run examples/fullstack-server.ts"
   },
   "peerDependencies": {
-    "@babel/core": "^7.28.3",
+    "@babel/core": "^7.28.4",
     "@babel/preset-react": "^7.27.1",
     "@vue/component-compiler-utils": "^3.3.0",
     "react": "^19.1.1",
