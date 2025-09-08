@@ -86,7 +86,7 @@
     "@types/bun": "^1.2.13",
     "@types/markdown-it": "^14.1.2",
     "@types/react": "^19.1.4",
-    "buddy-bot": "^0.9.4",
+    "buddy-bot": "^0.9.5",
     "bun-git-hooks": "^0.2.19",
     "bun-plugin-dtsx": "^0.21.12",
     "bunfig": "^0.10.0",
