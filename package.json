@@ -54,7 +54,7 @@
     "@babel/core": "^7.28.4",
     "@babel/preset-react": "^7.27.1",
     "@vue/component-compiler-utils": "^3.3.0",
-    "react": "^19.1.1",
+    "react": "^19.2.0",
     "vue-template-compiler": "^2.7.16"
   },
   "peerDependenciesMeta": {
@@ -85,7 +85,7 @@
     "@stacksjs/logsmith": "^0.1.18",
     "@types/bun": "^1.2.23",
     "@types/markdown-it": "^14.1.2",
-    "@types/react": "^19.1.17",
+    "@types/react": "^19.2.0",
     "buddy-bot": "^0.8.9",
     "bun-git-hooks": "^0.2.19",
     "bun-plugin-dtsx": "^0.21.12",
