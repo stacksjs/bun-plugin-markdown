@@ -92,9 +92,6 @@
     "bunfig": "^0.10.0",
     "typescript": "^5.9.3"
   },
-  "overrides": {
-    "unconfig": "0.3.10"
-  },
   "git-hooks": {
     "pre-commit": {
       "staged-lint": {
