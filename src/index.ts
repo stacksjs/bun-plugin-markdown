@@ -1,82 +1,88 @@
-import type { FrontMatterResult, LoaderOptions } from './types'
-import frontmatter from 'front-matter'
-import { Mode } from './mode'
-import { getNormalizedMarkdownCompiler, stringify } from './utils'
+import type { FrontMatterResult, LoaderOptions } from "./types";
+import frontmatter from "front-matter";
+import { Mode } from "./mode";
+import { getNormalizedMarkdownCompiler, stringify } from "./utils";
 
-export * from './config'
-export { bunFrontmatterMarkdownLoader } from './loader'
-export { Mode } from './mode'
-export * from './plugin'
-export * from './types'
+export { bunFrontmatterMarkdownLoader } from "./loader";
+export { Mode } from "./mode";
+export * from "./plugin";
+export * from "./types";
 
 // Export the loader function for Bun
 export default async function (this: any, source: string): Promise<string> {
-  const options: LoaderOptions = this.getOptions ? this.getOptions() : {}
-  const requestedMode = Array.isArray(options.mode) ? options.mode : [Mode.HTML]
-  const enabled = (mode: string): boolean => requestedMode.includes(mode)
+  const options: LoaderOptions = this.getOptions ? this.getOptions() : {};
+  const requestedMode = Array.isArray(options.mode)
+    ? options.mode
+    : [Mode.HTML];
+  const enabled = (mode: string): boolean => requestedMode.includes(mode);
 
-  let exported = ''
-  let prependOutput = ''
+  let exported = "";
+  let prependOutput = "";
 
   const addPrepend = (code: string): void => {
-    prependOutput = prependOutput.concat(`${code}\n`)
-  }
+    prependOutput = prependOutput.concat(`${code}\n`);
+  };
 
   const addProperty = (key: string, value: string): void => {
     exported += `
       ${key}: ${value},
-    `
-  }
+    `;
+  };
 
-  const fm = frontmatter(source) as FrontMatterResult
-  const markdownCompiler = getNormalizedMarkdownCompiler(options, enabled(Mode.REACT))
-  fm.html = markdownCompiler.render(fm.body)
+  const fm = frontmatter(source) as FrontMatterResult;
+  const markdownCompiler = getNormalizedMarkdownCompiler(
+    options,
+    enabled(Mode.REACT),
+  );
+  fm.html = markdownCompiler.render(fm.body);
 
-  addProperty('attributes', stringify(fm.attributes))
+  addProperty("attributes", stringify(fm.attributes));
 
-  if (enabled(Mode.HTML))
-    addProperty('html', stringify(fm.html))
+  if (enabled(Mode.HTML)) addProperty("html", stringify(fm.html));
 
-  if (enabled(Mode.BODY))
-    addProperty('body', stringify(fm.body))
+  if (enabled(Mode.BODY)) addProperty("body", stringify(fm.body));
 
   if (enabled(Mode.META)) {
     const meta = {
       resourcePath: this.resourcePath,
-    }
-    addProperty('meta', stringify(meta))
+    };
+    addProperty("meta", stringify(meta));
   }
 
-  if ((enabled(Mode.VUE_COMPONENT) || enabled(Mode.VUE_RENDER_FUNCTIONS))) {
-    let vueCompiler: any, compileVueTemplate: any
+  if (enabled(Mode.VUE_COMPONENT) || enabled(Mode.VUE_RENDER_FUNCTIONS)) {
+    let vueCompiler: any, compileVueTemplate: any;
     try {
       // eslint-disable-next-line ts/no-require-imports
-      vueCompiler = require('vue-template-compiler')
+      vueCompiler = require("vue-template-compiler");
       // eslint-disable-next-line ts/no-require-imports
-      compileVueTemplate = require('@vue/component-compiler-utils').compileTemplate
-    }
-    catch (err: any) {
-      if (err.code === 'MODULE_NOT_FOUND') {
+      compileVueTemplate =
+        require("@vue/component-compiler-utils").compileTemplate;
+    } catch (err: any) {
+      if (err.code === "MODULE_NOT_FOUND") {
         throw new Error(
-          'Failed to import vue-template-compiler or/and @vue/component-compiler-utils: \n'
-          + 'If you intend to use \'vue-component\', `vue-render-functions` mode, install both to your project: \n'
-          + 'https://hmsk.github.io/frontmatter-markdown-loader/vue.html',
-        )
-      }
-      else {
-        throw err
+          "Failed to import vue-template-compiler or/and @vue/component-compiler-utils: \n" +
+            "If you intend to use 'vue-component', `vue-render-functions` mode, install both to your project: \n" +
+            "https://hmsk.github.io/frontmatter-markdown-loader/vue.html",
+        );
+      } else {
+        throw err;
       }
     }
 
-    const vueRootClass = options.vue && options.vue.root ? options.vue.root : 'frontmatter-markdown'
-    const template = (fm.html || '')
-      .replace(/<(code\s[^>]+)>/g, '<$1 v-pre>')
-      .replace(/<code>/g, '<code v-pre>')
+    const vueRootClass =
+      options.vue && options.vue.root
+        ? options.vue.root
+        : "frontmatter-markdown";
+    const template = (fm.html || "")
+      .replace(/<(code\s[^>]+)>/g, "<$1 v-pre>")
+      .replace(/<code>/g, "<code v-pre>");
 
-    const transformAssetUrls = (options.vue
-      && (options.vue.transformAssetUrls === false || options.vue.transformAssetUrls))
-      ? options.vue.transformAssetUrls
-      : true
+    const transformAssetUrls =
+      options.vue &&
+      (options.vue.transformAssetUrls === false ||
+        options.vue.transformAssetUrls)
+        ? options.vue.transformAssetUrls
+        : true;
 
     const compileOptions = {
       source: `<div class="${vueRootClass}">${template}</div>`,
@@ -86,19 +92,21 @@ export default async function (this: any, source: string): Promise<string> {
         outputSourceRange: true,
       },
       transformAssetUrls,
-      isProduction: Bun.env.NODE_ENV === 'production',
-    }
+      isProduction: Bun.env.NODE_ENV === "production",
+    };
 
-    const compiled = compileVueTemplate(compileOptions)
-    addPrepend(`function extractVueFunctions () {\n${compiled.code}\nreturn { render: render, staticRenderFns: staticRenderFns }\n}\nconst vueFunctions = extractVueFunctions()`)
+    const compiled = compileVueTemplate(compileOptions);
+    addPrepend(
+      `function extractVueFunctions () {\n${compiled.code}\nreturn { render: render, staticRenderFns: staticRenderFns }\n}\nconst vueFunctions = extractVueFunctions()`,
+    );
 
-    let vueOutput = ''
+    let vueOutput = "";
 
     if (enabled(Mode.VUE_RENDER_FUNCTIONS)) {
       vueOutput += `
         render: vueFunctions.render,
         staticRenderFns: vueFunctions.staticRenderFns,
-      `
+      `;
     }
 
     if (enabled(Mode.VUE_COMPONENT)) {
@@ -117,50 +125,60 @@ export default async function (this: any, source: string): Promise<string> {
             this.$options.staticRenderFns = vueFunctions.staticRenderFns;
           }
         }
-      `
+      `;
     }
 
-    addProperty('vue', `{${vueOutput}}`)
+    addProperty("vue", `{${vueOutput}}`);
   }
 
   if (enabled(Mode.REACT)) {
-    let babelCore: any
-    const reactRootClass = options.react && options.react.root ? options.react.root : 'frontmatter-markdown'
+    let babelCore: any;
+    const reactRootClass =
+      options.react && options.react.root
+        ? options.react.root
+        : "frontmatter-markdown";
 
     try {
       // eslint-disable-next-line ts/no-require-imports
-      babelCore = require('@babel/core')
+      babelCore = require("@babel/core");
       // eslint-disable-next-line ts/no-require-imports
-      require('@babel/preset-react')
-    }
-    catch {
+      require("@babel/preset-react");
+    } catch {
       throw new Error(
-        'Failed to import @babel/core or/and @babel/preset-react: \n'
-        + 'If you intend to use \'react\' mode, install both to your project: \n'
-        + 'https://hmsk.github.io/frontmatter-markdown-loader/react.html',
-      )
+        "Failed to import @babel/core or/and @babel/preset-react: \n" +
+          "If you intend to use 'react' mode, install both to your project: \n" +
+          "https://hmsk.github.io/frontmatter-markdown-loader/react.html",
+      );
     }
 
-    addPrepend(`import React from 'react'`)
+    addPrepend(`import React from 'react'`);
 
-    const escape = (str: string): string => str.replace(/([\\`])/g, '\\$1')
+    const escape = (str: string): string => str.replace(/([\\`])/g, "\\$1");
 
-    const template = (fm.html || '')
-      .replace(/<code(\s[^>]+)>(.+?)<\/code>/gs, (match, p1, p2) =>
-        `<code${p1} dangerouslySetInnerHTML={{ __html: \`${escape(p2)}\`}} />`)
-      .replace(/<code>(.+?)<\/code>/gs, (match, p1) =>
-        `<code dangerouslySetInnerHTML={{ __html: \`${escape(p1)}\`}} />`)
-      .replace(/<(code|pre)([^\s>]*)\sclass=([^>]+)>/g, '<$1$2 className=$3>')
+    const template = (fm.html || "")
+      .replace(
+        /<code(\s[^>]+)>(.+?)<\/code>/gs,
+        (match, p1, p2) =>
+          `<code${p1} dangerouslySetInnerHTML={{ __html: \`${escape(p2)}\`}} />`,
+      )
+      .replace(
+        /<code>(.+?)<\/code>/gs,
+        (match, p1) =>
+          `<code dangerouslySetInnerHTML={{ __html: \`${escape(p1)}\`}} />`,
+      )
+      .replace(/<(code|pre)([^\s>]*)\sclass=([^>]+)>/g, "<$1$2 className=$3>");
 
-    const compiled = babelCore
-      .transformSync(`
+    const compiled = babelCore.transformSync(
+      `
         const markdown =
           <div className="${reactRootClass}">
             ${template}
           </div>
-        `, {
-        presets: ['@babel/preset-react'],
-      })
+        `,
+      {
+        presets: ["@babel/preset-react"],
+      },
+    );
 
     const reactComponent = `
       function (props) {
@@ -170,9 +188,9 @@ export default async function (this: any, source: string): Promise<string> {
         ${compiled.code}
         return markdown
       }
-    `
-    addProperty('react', reactComponent)
+    `;
+    addProperty("react", reactComponent);
   }
 
-  return `${prependOutput}\nmodule.exports = { ${exported} }`
+  return `${prependOutput}\nmodule.exports = { ${exported} }`;
 }
