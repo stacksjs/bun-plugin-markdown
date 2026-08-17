@@ -2,6 +2,12 @@ import type { LoaderOptions } from '../src/types'
 import { describe, expect, test } from 'bun:test'
 import { Mode } from '../src/mode'
 
+/** What the generated loader module assigns onto `module.exports`. */
+interface LoadedModule {
+  html?: string
+  attributes?: string
+}
+
 // Mock implementation for testing purposes
 function createLoader(options: LoaderOptions = {}) {
   return {
@@ -63,7 +69,10 @@ More content here.`
     try {
       const loader = await createLoader().load.call(mockContext, 'test.md')
       // Create a module from the loader output
-      const module = { exports: {} }
+      // The loader assigns `html` and `attributes` onto exports, both as JSON
+      // strings; naming the shape keeps the reads typed rather than reaching
+      // into `{}`.
+      const module: { exports: LoadedModule } = { exports: {} }
       // @ts-ignore Function constructor usage
       const fn = new Function('module', 'exports', loader)
       fn(module, module.exports)
@@ -72,7 +81,7 @@ More content here.`
 
       expect(result).toBeDefined()
       expect(result.attributes).toBeDefined()
-      expect(JSON.parse(result.attributes)).toEqual({
+      expect(JSON.parse(result.attributes!)).toEqual({
         title: 'Test Title',
         author: 'Test Author',
         tags: ['test', 'markdown'],
@@ -101,7 +110,10 @@ More content here.`
     try {
       const loader = await createLoader().load.call(mockContext, 'test.md')
       // Create a module from the loader output
-      const module = { exports: {} }
+      // The loader assigns `html` and `attributes` onto exports, both as JSON
+      // strings; naming the shape keeps the reads typed rather than reaching
+      // into `{}`.
+      const module: { exports: LoadedModule } = { exports: {} }
       // @ts-ignore Function constructor usage
       const fn = new Function('module', 'exports', loader)
       fn(module, module.exports)
@@ -110,7 +122,7 @@ More content here.`
 
       expect(result).toBeDefined()
       expect(result.html).toBeDefined()
-      const htmlContent = JSON.parse(result.html)
+      const htmlContent = JSON.parse(result.html!)
       expect(htmlContent).toContain('<h1>Heading 1</h1>')
       expect(htmlContent).toContain('<h2>Heading 2</h2>')
       expect(htmlContent).toContain('<p>This is a test markdown file.</p>')
