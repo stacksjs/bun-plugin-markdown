@@ -99,7 +99,7 @@
     "bun-git-hooks": "^0.2.19",
     "bun-plugin-dtsx": "^0.21.12",
     "bunfig": "^0.10.0",
-    "pickier": "^0.9.4",
+    "pickier": "^0.1.58",
     "typescript": "^7.0.2"
   },
   "git-hooks": {
