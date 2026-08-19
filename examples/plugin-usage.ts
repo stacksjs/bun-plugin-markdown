@@ -81,6 +81,9 @@ Bun.plugin(markdownPlugin)
   }
 }
 
-// Run the example
+// Run the example. An example script is not a published entrypoint, and reading
+// top-down is the point of the file.
+// eslint-disable-next-line ts/no-top-level-await
 await ensureContentFileExists()
+// eslint-disable-next-line ts/no-top-level-await
 await runExample()

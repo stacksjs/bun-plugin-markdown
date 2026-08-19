@@ -163,6 +163,7 @@ export default async function (this: any, source: string): Promise<string> {
       )
       .replace(
         /<code>(.+?)<\/code>/gs,
+        // eslint-disable-next-line pickier/no-unused-vars -- `match` is positional; p1 is unreachable without it
         (match, p1) =>
           `<code dangerouslySetInnerHTML={{ __html: \`${escape(p1)}\`}} />`,
       )
