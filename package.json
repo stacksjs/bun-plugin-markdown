@@ -13,7 +13,13 @@
   "bugs": {
     "url": "https://github.com/stacksjs/bun-plugin-markdown/issues"
   },
-  "keywords": ["typescript", "bun", "loader", "markdown", "frontmatter"],
+  "keywords": [
+    "typescript",
+    "bun",
+    "loader",
+    "markdown",
+    "frontmatter"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -32,7 +38,10 @@
   "bin": {
     "bin-name": "./dist/bin/cli.js"
   },
-  "files": ["README.md", "dist"],
+  "files": [
+    "README.md",
+    "dist"
+  ],
   "scripts": {
     "build": "bun --bun build.ts",
     "fresh": "bunx rimraf node_modules/ bun.lock && bun i",
@@ -90,7 +99,7 @@
     "bun-git-hooks": "^0.2.19",
     "bun-plugin-dtsx": "^0.21.12",
     "bunfig": "^0.10.0",
-    "typescript": "^5.8.3"
+    "typescript": "^7.0.2"
   },
   "git-hooks": {
     "pre-commit": {
