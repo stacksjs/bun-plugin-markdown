@@ -97,7 +97,7 @@
     "@types/react": "^19.1.4",
     "buddy-bot": "^0.8.9",
     "bun-git-hooks": "^0.2.19",
-    "bun-plugin-dtsx": "^0.21.12",
+    "bun-plugin-dtsx": "^0.11.8",
     "bunfig": "^0.10.0",
     "pickier": "^0.1.58",
     "typescript": "^7.0.2"
