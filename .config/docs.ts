@@ -1,7 +1,7 @@
-import type { BunPressConfig } from 'bunpress'
+import type { BunPressConfig } from '@stacksjs/bunpress'
 
 export default {
-  name: 'bun-plugin-markdown',
+  title: 'bun-plugin-markdown',
   description: 'A Bun loader and plugin for handling Markdown files with frontmatter',
   themeConfig: {
     nav: [
