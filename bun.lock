@@ -18,7 +18,7 @@
         "@types/react": "^19.1.4",
         "buddy-bot": "^0.8.9",
         "bun-git-hooks": "^0.2.19",
-        "bun-plugin-dtsx": "^0.11.8",
+        "bun-plugin-dtsx": "^0.11.10",
         "bunfig": "^0.10.0",
         "pickier": "^0.1.58",
         "typescript": "^7.0.2",
@@ -56,7 +56,7 @@
 
     "@stacksjs/desktop": ["@stacksjs/desktop@0.2.198", "", { "dependencies": { "craft-native": ">=0.0.55" } }, "sha512-P+iUxNgNc2DvlrnwCpy1lo6jnmUSfHSQj1nl9S5enb8glknDtd13mpOyelO5u8VxPVgGyQ9xPFDlI44fzHc10w=="],
 
-    "@stacksjs/dtsx": ["@stacksjs/dtsx@0.11.8", "", { "dependencies": { "@stacksjs/clapp": "^0.2.0" }, "bin": { "dtsx": "./dist/bin/cli.js" } }, "sha512-ekcE6ClfEzskxaS1YLwyGdzn9HxPYWEN7UhUnRsOBYNGoBB7zDHrFqyi41wDdv7inBTEofzx1Uz6bJ4PJn4IxA=="],
+    "@stacksjs/dtsx": ["@stacksjs/dtsx@0.11.10", "", { "dependencies": { "@stacksjs/clapp": "^0.2.0" }, "bin": { "dtsx": "./dist/bin/cli.js" } }, "sha512-NOSSGv7mdxzmijmKHxTZDmgZp7vCYrRKWpDwNqwTc97MTv5csjo3uukf7A/c+s7pSzJd+HxqsTCZ7IznjfEtmw=="],
 
     "@stacksjs/gitlint": ["@stacksjs/gitlint@0.1.8", "", { "bin": { "gitlint": "./dist/bin/cli.js" } }, "sha512-lv+Ttwwif0UR0qgRGih8/ePslcrcDLjYybmDOQE7kM2IXoaRZUFh2LhZWHbaICd3ejdGb7MNvY2emiJE7Cs+Wg=="],
 
@@ -170,7 +170,7 @@
 
     "bun-git-hooks": ["bun-git-hooks@0.2.19", "", { "bin": { "git-hooks": "dist/bin/cli.js", "bun-git-hooks": "dist/bin/cli.js" } }, "sha512-h+YfI+/hCojKadnC9kfk71suZsjdgKShv82+bHp6UiHwH+XDyqavfAUt4NQTGRcIq7dSo2Mfh0QgCiAkCJOl8w=="],
 
-    "bun-plugin-dtsx": ["bun-plugin-dtsx@0.11.8", "", { "dependencies": { "@stacksjs/dtsx": "0.11.8" } }, "sha512-D0B2tGN2vU48XOUeGy5vNxVx4r/3eFnOVZbzWJ3TUrPJPObvz/DwJPP2jdHCdUv5rhEaoON0mnPW+j0/11efOQ=="],
+    "bun-plugin-dtsx": ["bun-plugin-dtsx@0.11.10", "", { "dependencies": { "@stacksjs/dtsx": "0.11.10" } }, "sha512-qQrEBIV1pzhDmrxmhTHhgVK5gqE5CfpO8C9NCp7zUaN48c4IJVrpqXbeNWch7sAT/Hf4GhVMWau7T65xySm59Q=="],
 
     "bun-plugin-stx": ["bun-plugin-stx@0.2.198", "", { "dependencies": { "@stacksjs/stx": "^0.2.72", "stx-router": "^0.2.72" }, "bin": { "serve": "./dist/serve.js", "stx-serve": "./dist/serve.js" } }, "sha512-NiCfmceacqrAvM8mb5iutA0v94IUOhreyyTl4T7PEmPG2fvsT3QYerR2gqy7SU8Pja4+UfKvMEhHt9Unlhyl3w=="],
 
